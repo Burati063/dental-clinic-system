@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Dental Clinic</title>
+    <link rel="stylesheet" href="../../css/admin/admin-dashboard.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar -->
+        <aside class="main-sidebar">
+            <div class="sidebar-content">
+                <div class="sidebar-header">
+                    <div class="sidebar-logo">
+                        <i class="fas fa-tooth"></i>
+                        <span class="logo-text">Dental Clinic</span>
+                    </div>
+                    <button class="sidebar-close" id="sidebarClose">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <nav class="sidebar-nav">
+                    <ul class="nav-list">
+                        <li class="nav-item">
+                            <a href="dashboard.html" class="nav-link active">
+                                <i class="fas fa-home nav-icon"></i>
+                                <span class="nav-text">Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="users.html" class="nav-link">
+                                <i class="fas fa-users nav-icon"></i>
+                                <span class="nav-text">User Management</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="backup.html" class="nav-link">
+                                <i class="fas fa-database nav-icon"></i>
+                                <span class="nav-text">Backup System</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+
+                <div class="sidebar-footer">
+                    <div class="user-profile">
+                        <div class="user-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="user-details">
+                            <div class="user-name" id="sidebar-user-name">Loading...</div>
+                            <div class="user-role" id="sidebar-user-role">Administrator</div>
+                        </div>
+                    </div>
+                    <button class="logout-btn sidebar-logout" onclick="handleLogout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <header class="main-header">
+                <div class="header-content">
+                    <button class="mobile-menu-btn" id="mobileMenuBtn">
+                        <i class="fas fa-bars"></i>
+                    </button>
+
+                    <div class="logo-section">
+                        <div class="logo">
+                            <i class="fas fa-tooth"></i>
+                            <span class="logo-text">Dental Clinic</span>
+                        </div>
+                    </div>
+
+                    <div class="search-section">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" placeholder="Search patients, appointments..." id="globalSearch">
+                            <button class="search-clear hidden" id="searchClear">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="header-actions">
+                        <div class="action-item dropdown">
+                            <button class="action-btn" id="notificationsBtn">
+                                <i class="fas fa-bell"></i>
+                                <span class="notification-badge hidden" id="notificationCount">0</span>
+                            </button>
+                            <div class="dropdown-menu notifications-dropdown">
+                                <div class="dropdown-header">
+                                    <h4>Notifications</h4>
+                                    <button class="btn btn-sm btn-outline" onclick="markAllNotificationsRead()">Mark all read</button>
+                                </div>
+                                <div class="dropdown-body">
+                                    <div class="notification-list" id="notificationList">
+                                        <div class="notification-empty">
+                                            <i class="fas fa-bell-slash"></i>
+                                            <p>No new notifications</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dropdown-footer">
+                                    <a href="#" class="view-all">View all notifications</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="action-item dropdown">
+                            <button class="user-profile-btn" id="userProfileBtn">
+                                <div class="user-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="user-info">
+                                    <span class="user-name" id="header-user-name">Loading...</span>
+                                    <span class="user-role" id="header-user-role">Administrator</span>
+                                </div>
+                                <i class="fas fa-chevron-down dropdown-arrow"></i>
+                            </button>
+                            <div class="dropdown-menu profile-dropdown">
+                                <div class="dropdown-body">
+                                    <a href="profile.html" class="dropdown-item">
+                                        <i class="fas fa-user"></i>
+                                        <span>My Profile</span>
+                                    </a>
+                                    <a href="backup.html" class="dropdown-item">
+                                        <i class="fas fa-database"></i>
+                                        <span>Backup System</span>
+                                    </a>
+                                    <a href="help.html" class="dropdown-item">
+                                        <i class="fas fa-question-circle"></i>
+                                        <span>Help & Support</span>
+                                    </a>
+                                    <div class="dropdown-divider"></div>
+                                    <a href="#" class="dropdown-item logout-btn" onclick="handleLogout()">
+                                        <i class="fas fa-sign-out-alt"></i>
+                                        <span>Logout</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Content -->
+            <main class="content-area">
+                <div class="dashboard-admin">
+                    <div class="dashboard-header">
+                        <h1>Admin Dashboard</h1>
+                        <p id="welcome-message">Loading...</p>
+                    </div>
+
+                    <!-- Stats Grid -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-content">
+                                <div class="stat-main">
+                                    <div class="stat-number" id="total-users">-</div>
+                                    <div class="stat-label">Total Users</div>
+                                </div>
+                                <div class="stat-icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                            </div>
+                            <div class="stat-trend">
+                                <i class="fas fa-minus trend-neutral"></i>
+                                <span id="users-trend">Loading...</span>
+                            </div>
+                        </div>
+
+                        <div class="stat-card success">
+                            <div class="stat-content">
+                                <div class="stat-main">
+                                    <div class="stat-number" id="total-patients">-</div>
+                                    <div class="stat-label">Total Patients</div>
+                                </div>
+                                <div class="stat-icon">
+                                    <i class="fas fa-user-injured"></i>
+                                </div>
+                            </div>
+                            <div class="stat-trend">
+                                <i class="fas fa-minus trend-neutral"></i>
+                                <span id="patients-trend">Loading...</span>
+                            </div>
+                        </div>
+
+                        <div class="stat-card warning">
+                            <div class="stat-content">
+                                <div class="stat-main">
+                                    <div class="stat-number" id="today-appointments">-</div>
+                                    <div class="stat-label">Today's Appointments</div>
+                                </div>
+                                <div class="stat-icon">
+                                    <i class="fas fa-calendar-day"></i>
+                                </div>
+                            </div>
+                            <div class="stat-trend">
+                                <i class="fas fa-minus trend-neutral"></i>
+                                <span id="appointments-trend">Loading...</span>
+                            </div>
+                        </div>
+
+                        <div class="stat-card danger">
+                            <div class="stat-content">
+                                <div class="stat-main">
+                                    <div class="stat-number" id="pending-tasks">-</div>
+                                    <div class="stat-label">Pending Tasks</div>
+                                </div>
+                                <div class="stat-icon">
+                                    <i class="fas fa-tasks"></i>
+                                </div>
+                            </div>
+                            <div class="stat-trend">
+                                <i class="fas fa-minus trend-neutral"></i>
+                                <span id="tasks-trend">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="card quick-actions-card">
+                        <div class="card-header">
+                            <h2>Quick Actions</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="quick-actions-grid">
+                                <button class="quick-action-btn" onclick="location.href='users.html'">
+                                    <div class="action-icon">
+                                        <i class="fas fa-user-plus"></i>
+                                    </div>
+                                    <span>Add New User</span>
+                                </button>
+
+                                <button class="quick-action-btn" onclick="location.href='backup.html'">
+                                    <div class="action-icon">
+                                        <i class="fas fa-database"></i>
+                                    </div>
+                                    <span>Backup System</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Patients -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Recent Patients</h2>
+                            <button class="btn btn-sm btn-outline" onclick="location.href='patients.html'">
+                                View All
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <!-- Patient Search -->
+                            <div class="patient-search">
+                                <div class="patient-search-box">
+                                    <i class="fas fa-search"></i>
+                                    <input type="text" id="patientSearch" placeholder="Search patients by name, contact, or ID...">
+                                </div>
+                            </div>
+                            
+                            <div class="patients-table">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Patient Name</th>
+                                            <th>Contact</th>
+                                            <th>Last Visit</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="recent-patients">
+                                        <tr>
+                                            <td colspan="5" class="text-center">
+                                                <div class="loading-state">
+                                                    <i class="fas fa-spinner fa-spin"></i>
+                                                    <p>Loading patients...</p>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <!-- Pagination -->
+                            <div class="pagination">
+                                <div class="pagination-info" id="pagination-info">
+                                    Showing 0 of 0 patients
+                                </div>
+                                <div class="pagination-controls">
+                                    <button class="pagination-btn" id="prev-page" disabled>
+                                        <i class="fas fa-chevron-left"></i> Previous
+                                    </button>
+                                    <div class="pagination-numbers" id="pagination-numbers">
+                                        <!-- Page numbers will be generated here -->
+                                    </div>
+                                    <button class="pagination-btn" id="next-page" disabled>
+                                        Next <i class="fas fa-chevron-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <script src="../../js/core/utils.js"></script>
+    <script src="../../js/core/api.js"></script>
+    <script src="../../js/core/auth.js"></script>
+    <script src="../../js/admin/admin-dashboard.js"></script>
+</body>
+</html>

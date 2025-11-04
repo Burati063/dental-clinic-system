@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Records - Dental Clinic</title>
+    <link rel="stylesheet" href="../../css/doctor/medical-records.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar -->
+        <aside class="main-sidebar">
+            <div class="sidebar-content">
+                <div class="sidebar-header">
+                    <div class="sidebar-logo">
+                        <i class="fas fa-tooth"></i>
+                        <span class="logo-text">Dental Clinic</span>
+                    </div>
+                    <button class="sidebar-close" id="sidebarClose">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <nav class="sidebar-nav">
+                    <ul class="nav-list">
+                        <li class="nav-item">
+                            <a href="dashboard.html" class="nav-link">
+                                <i class="fas fa-home nav-icon"></i>
+                                <span class="nav-text">Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="appointments.html" class="nav-link">
+                                <i class="fas fa-calendar-check nav-icon"></i>
+                                <span class="nav-text">Appointments</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="medical-records.html" class="nav-link active">
+                                <i class="fas fa-file-medical nav-icon"></i>
+                                <span class="nav-text">Medical Records</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+
+                <div class="sidebar-footer">
+                    <div class="user-profile">
+                        <div class="user-avatar">
+                            <i class="fas fa-user-md"></i>
+                        </div>
+                        <div class="user-details">
+                            <div class="user-name" id="sidebar-user-name">Loading...</div>
+                            <div class="user-role" id="sidebar-user-role">Doctor</div>
+                        </div>
+                    </div>
+                    <button class="logout-btn sidebar-logout" onclick="handleLogout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <header class="main-header">
+                <div class="header-content">
+                    <button class="mobile-menu-btn" id="mobileMenuBtn">
+                        <i class="fas fa-bars"></i>
+                    </button>
+
+                    <div class="logo-section">
+                        <div class="logo">
+                            <i class="fas fa-tooth"></i>
+                            <span class="logo-text">Dental Clinic</span>
+                        </div>
+                    </div>
+
+                    <div class="search-section">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" placeholder="Search medical records..." id="globalSearch">
+                            <button class="search-clear hidden" id="searchClear">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="header-actions">
+                        <div class="action-item dropdown">
+                            <button class="action-btn" id="notificationsBtn">
+                                <i class="fas fa-bell"></i>
+                                <span class="notification-badge hidden" id="notificationCount">0</span>
+                            </button>
+                            <div class="dropdown-menu notifications-dropdown">
+                                <div class="dropdown-header">
+                                    <h4>Notifications</h4>
+                                    <button class="btn btn-sm btn-outline" onclick="markAllNotificationsRead()">Mark all read</button>
+                                </div>
+                                <div class="dropdown-body">
+                                    <div class="notification-list" id="notificationList">
+                                        <div class="notification-empty">
+                                            <i class="fas fa-bell-slash"></i>
+                                            <p>No new notifications</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dropdown-footer">
+                                    <a href="#" class="view-all">View all notifications</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="action-item dropdown">
+                            <button class="user-profile-btn" id="userProfileBtn">
+                                <div class="user-avatar">
+                                    <i class="fas fa-user-md"></i>
+                                </div>
+                                <div class="user-info">
+                                    <span class="user-name" id="header-user-name">Loading...</span>
+                                    <span class="user-role" id="header-user-role">Doctor</span>
+                                </div>
+                                <i class="fas fa-chevron-down dropdown-arrow"></i>
+                            </button>
+                            <div class="dropdown-menu profile-dropdown">
+                                <div class="dropdown-body">
+                                    <a href="profile.html" class="dropdown-item">
+                                        <i class="fas fa-user"></i>
+                                        <span>My Profile</span>
+                                    </a>
+                                    <a href="settings.html" class="dropdown-item">
+                                        <i class="fas fa-cog"></i>
+                                        <span>Settings</span>
+                                    </a>
+                                    <div class="dropdown-divider"></div>
+                                    <a href="#" class="dropdown-item logout-btn" onclick="handleLogout()">
+                                        <i class="fas fa-sign-out-alt"></i>
+                                        <span>Logout</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Medical Records Content -->
+            <main class="content-area">
+                <div class="records-management">
+                    <div class="page-header">
+                        <div class="header-content">
+                            <h1>Medical Records</h1>
+                            <p>Manage patient dental records and treatment history</p>
+                        </div>
+                        <button class="btn btn-primary" onclick="showNewRecordModal()">
+                            <i class="fas fa-plus"></i> New Record
+                        </button>
+                    </div>
+
+                    <!-- Records Stats -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-content">
+                                <div class="stat-main">
+                                    <div class="stat-number" id="total-records">-</div>
+                                    <div class="stat-label">Total Records</div>
+                                </div>
+                                <div class="stat-icon">
+                                    <i class="fas fa-file-medical"></i>
+                                </div>
+                            </div>
+                            <div class="stat-trend positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span id="records-trend">0%</span> this month
+                            </div>
+                        </div>
+
+                        <div class="stat-card success">
+                            <div class="stat-content">
+                                <div class="stat-main">
+                                    <div class="stat-number" id="records-today">-</div>
+                                    <div class="stat-label">Records Today</div>
+                                </div>
+                                <div class="stat-icon">
+                                    <i class="fas fa-calendar-day"></i>
+                                </div>
+                            </div>
+                            <div class="stat-trend positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span id="today-trend">0%</span> from yesterday
+                            </div>
+                        </div>
+
+                        <div class="stat-card warning">
+                            <div class="stat-content">
+                                <div class="stat-main">
+                                    <div class="stat-number" id="follow-up-needed">-</div>
+                                    <div class="stat-label">Follow-up Needed</div>
+                                </div>
+                                <div class="stat-icon">
+                                    <i class="fas fa-stethoscope"></i>
+                                </div>
+                            </div>
+                            <div class="stat-trend positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span id="follow-up-trend">0%</span> this week
+                            </div>
+                        </div>
+
+                        <div class="stat-card info">
+                            <div class="stat-content">
+                                <div class="stat-main">
+                                    <div class="stat-number" id="completed-treatments">-</div>
+                                    <div class="stat-label">Completed Treatments</div>
+                                </div>
+                                <div class="stat-icon">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                            </div>
+                            <div class="stat-trend positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span id="treatments-trend">0%</span> this month
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Medical Records List -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Patient Records</h2>
+                            <div class="header-actions">
+                                <button class="btn btn-sm btn-outline" onclick="refreshRecords()">
+                                    <i class="fas fa-sync-alt"></i> Refresh
+                                </button>
+                                <button class="btn btn-sm btn-outline" onclick="exportRecords()">
+                                    <i class="fas fa-download"></i> Export
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-actions">
+                                <div class="search-box">
+                                    <i class="fas fa-search"></i>
+                                    <input type="text" placeholder="Search records..." class="form-control" id="recordSearch">
+                                </div>
+                                <div class="filter-actions">
+                                    <select class="form-control" id="statusFilter">
+                                        <option value="all">All Status</option>
+                                        <option value="active">Active</option>
+                                        <option value="completed">Completed</option>
+                                        <option value="follow-up">Follow-up Needed</option>
+                                        <option value="cancelled">Cancelled</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="table-container">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Patient</th>
+                                            <th>Treatment Description</th>
+                                            <th>Date</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="records-table-body">
+                                        <tr>
+                                            <td colspan="6" class="text-center">
+                                                <div class="loading-state">
+                                                    <i class="fas fa-spinner fa-spin"></i>
+                                                    <p>Loading medical records...</p>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Pagination -->
+                            <div class="pagination">
+                                <div class="pagination-info" id="pagination-info">
+                                    Showing 0 of 0 records
+                                </div>
+                                <div class="pagination-controls">
+                                    <button class="pagination-btn" id="prev-page" disabled>
+                                        <i class="fas fa-chevron-left"></i> Previous
+                                    </button>
+                                    <div class="pagination-numbers" id="pagination-numbers">
+                                        <!-- Page numbers will be generated here -->
+                                    </div>
+                                    <button class="pagination-btn" id="next-page" disabled>
+                                        Next <i class="fas fa-chevron-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- New Medical Record Modal -->
+    <div class="modal-overlay hidden" id="newRecordModal">
+        <div class="modal large">
+            <div class="modal-header">
+                <h3>Create New Medical Record</h3>
+                <button class="modal-close" onclick="hideNewRecordModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="newRecordForm">
+                    <div class="form-group">
+                        <label for="patientSelect">Select Patient *</label>
+                        <select id="patientSelect" class="form-control" required>
+                            <option value="">Select Patient</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="treatmentDate">Treatment Date *</label>
+                            <input type="date" id="treatmentDate" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="recordStatus">Status *</label>
+                            <select id="recordStatus" class="form-control" required>
+                                <option value="active">Active</option>
+                                <option value="completed">Completed</option>
+                                <option value="follow-up">Follow-up Needed</option>
+                                <option value="cancelled">Cancelled</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="treatmentDescription">Treatment Description *</label>
+                        <textarea id="treatmentDescription" class="form-control" rows="3" placeholder="Describe the treatment performed..." required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="diagnosis">Diagnosis *</label>
+                        <textarea id="diagnosis" class="form-control" rows="3" placeholder="Enter diagnosis..." required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="treatmentPlan">Treatment Plan *</label>
+                        <textarea id="treatmentPlan" class="form-control" rows="3" placeholder="Describe the treatment plan..." required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="medications">Medications Prescribed</label>
+                        <textarea id="medications" class="form-control" rows="2" placeholder="List any medications prescribed..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="notes">Additional Notes</label>
+                        <textarea id="notes" class="form-control" rows="2" placeholder="Any additional notes or observations..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nextAppointment">Next Appointment (if needed)</label>
+                        <input type="date" id="nextAppointment" class="form-control">
+                    </div>
+                    <!-- In the New Medical Record Modal, add this section after the nextAppointment field -->
+<div class="form-group">
+    <label for="recordFiles">Attach Files (Multiple)</label>
+    <div class="file-upload-area" id="fileUploadArea">
+        <div class="file-upload-placeholder">
+            <i class="fas fa-cloud-upload-alt"></i>
+            <p>Drag & drop files here or click to browse</p>
+            <span class="file-types">Supports: PDF, JPG, PNG, DOC (Max 10MB each)</span>
+        </div>
+        <input type="file" id="recordFiles" class="file-input" multiple 
+               accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx" 
+               onchange="handleFileSelection(this.files)">
+    </div>
+    <div class="file-preview-container" id="filePreviewContainer">
+        <!-- File previews will be added here -->
+    </div>
+</div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="hideNewRecordModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="createNewRecord()">
+                    <i class="fas fa-save"></i> Save Record
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Record Details Modal -->
+    <div class="modal-overlay hidden" id="recordDetailsModal">
+        <div class="modal large">
+            <div class="modal-header">
+                <h3>Medical Record Details</h3>
+                <button class="modal-close" onclick="hideRecordDetailsModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="record-details" id="recordDetails">
+                    <!-- Details will be loaded here -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="hideRecordDetailsModal()">Close</button>
+                <button class="btn btn-primary" id="editRecordBtn">Edit</button>
+                <button class="btn btn-warning" id="printRecordBtn">
+                    <i class="fas fa-print"></i> Print
+                </button>
+                <button class="btn btn-danger" id="deleteRecordBtn">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../js/doctor/medical-records.js"></script>
+    <script src="../../js/core/utils.js"></script>
+    <script src="../../js/core/api.js"></script>
+    <script src="../../js/core/auth.js"></script>
+</body>
+</html>

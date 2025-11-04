@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointments - Dental Clinic</title>
+     <link rel="stylesheet" href="../../css/doctor/appointments.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar -->
+        <aside class="main-sidebar">
+            <div class="sidebar-content">
+                <div class="sidebar-header">
+                    <div class="sidebar-logo">
+                        <i class="fas fa-tooth"></i>
+                        <span class="logo-text">Dental Clinic</span>
+                    </div>
+                    <button class="sidebar-close" id="sidebarClose">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <nav class="sidebar-nav">
+                    <ul class="nav-list">
+                        <li class="nav-item">
+                            <a href="dashboard.html" class="nav-link">
+                                <i class="fas fa-home nav-icon"></i>
+                                <span class="nav-text">Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="appointments.html" class="nav-link active">
+                                <i class="fas fa-calendar-check nav-icon"></i>
+                                <span class="nav-text">Appointments</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="medical-records.html" class="nav-link">
+                                <i class="fas fa-file-medical nav-icon"></i>
+                                <span class="nav-text">Medical Records</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+
+                <div class="sidebar-footer">
+                    <div class="user-profile">
+                        <div class="user-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="user-details">
+                            <div class="user-name" id="sidebar-user-name">Dr. Sarah Johnson</div>
+                            <div class="user-role" id="sidebar-user-role">Dentist</div>
+                        </div>
+                    </div>
+                    <button class="logout-btn sidebar-logout" onclick="handleLogout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <header class="main-header">
+                <div class="header-content">
+                    <button class="mobile-menu-btn" id="mobileMenuBtn">
+                        <i class="fas fa-bars"></i>
+                    </button>
+
+                    <div class="logo-section">
+                        <div class="logo">
+                            <i class="fas fa-tooth"></i>
+                            <span class="logo-text">Dental Clinic</span>
+                        </div>
+                    </div>
+
+                    <div class="search-section">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" placeholder="Search appointments..." id="globalSearch">
+                            <button class="search-clear hidden" id="searchClear">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="header-actions">
+                        <div class="action-item dropdown">
+                            <button class="action-btn" id="notificationsBtn">
+                                <i class="fas fa-bell"></i>
+                                <span class="notification-badge" id="notificationCount">3</span>
+                            </button>
+                            <div class="dropdown-menu notifications-dropdown">
+                                <div class="dropdown-header">
+                                    <h4>Notifications</h4>
+                                    <button class="btn btn-sm btn-outline" onclick="markAllNotificationsRead()">Mark all read</button>
+                                </div>
+                                <div class="dropdown-body">
+                                    <div class="notification-list" id="notificationList">
+                                        <div class="notification-item unread">
+                                            <div class="notification-content">
+                                                <div class="notification-title">New Appointment</div>
+                                                <div class="notification-desc">John Smith scheduled a dental checkup</div>
+                                                <div class="notification-time">5 minutes ago</div>
+                                            </div>
+                                        </div>
+                                        <div class="notification-item unread">
+                                            <div class="notification-content">
+                                                <div class="notification-title">Appointment Reminder</div>
+                                                <div class="notification-desc">Maria Garcia has an appointment in 1 hour</div>
+                                                <div class="notification-time">1 hour ago</div>
+                                            </div>
+                                        </div>
+                                        <div class="notification-item">
+                                            <div class="notification-content">
+                                                <div class="notification-title">Cancellation</div>
+                                                <div class="notification-desc">Robert Wilson cancelled his appointment</div>
+                                                <div class="notification-time">2 hours ago</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dropdown-footer">
+                                    <a href="#" class="view-all">View all notifications</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="action-item dropdown">
+                            <button class="user-profile-btn" id="userProfileBtn">
+                                <div class="user-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="user-info">
+                                    <span class="user-name" id="header-user-name">Dr. Sarah Johnson</span>
+                                    <span class="user-role" id="header-user-role">Dentist</span>
+                                </div>
+                                <i class="fas fa-chevron-down dropdown-arrow"></i>
+                            </button>
+                            <div class="dropdown-menu profile-dropdown">
+                                <div class="dropdown-body">
+                                    <a href="profile.html" class="dropdown-item">
+                                        <i class="fas fa-user"></i>
+                                        <span>My Profile</span>
+                                    </a>
+                                    <a href="settings.html" class="dropdown-item">
+                                        <i class="fas fa-cog"></i>
+                                        <span>Settings</span>
+                                    </a>
+                                    <div class="dropdown-divider"></div>
+                                    <a href="#" class="dropdown-item logout-btn" onclick="handleLogout()">
+                                        <i class="fas fa-sign-out-alt"></i>
+                                        <span>Logout</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Appointments Content -->
+            <main class="content-area">
+                <div class="appointments-management">
+                    <div class="page-header">
+                        <div class="header-content">
+                            <h1>Appointment Management</h1>
+                            <p>Manage patient appointments and schedules</p>
+                        </div>
+                        <button class="btn btn-primary" onclick="showNewAppointmentModal()">
+                            <i class="fas fa-plus"></i> New Appointment
+                        </button>
+                    </div>
+
+                    <!-- Appointment Stats -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-content">
+                                <div class="stat-main">
+                                    <div class="stat-number" id="total-appointments">12</div>
+                                    <div class="stat-label">Total Today</div>
+                                </div>
+                                <div class="stat-icon">
+                                    <i class="fas fa-calendar-day"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card success">
+                            <div class="stat-content">
+                                <div class="stat-main">
+                                    <div class="stat-number" id="confirmed-appointments">8</div>
+                                    <div class="stat-label">Confirmed</div>
+                                </div>
+                                <div class="stat-icon">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card warning">
+                            <div class="stat-content">
+                                <div class="stat-main">
+                                    <div class="stat-number" id="pending-appointments">3</div>
+                                    <div class="stat-label">Pending</div>
+                                </div>
+                                <div class="stat-icon">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card danger">
+                            <div class="stat-content">
+                                <div class="stat-main">
+                                    <div class="stat-number" id="cancelled-appointments">1</div>
+                                    <div class="stat-label">Cancelled</div>
+                                </div>
+                                <div class="stat-icon">
+                                    <i class="fas fa-times-circle"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Calendar View -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Calendar View</h2>
+                            <div class="calendar-controls">
+                                <button class="btn btn-sm btn-outline" id="prevWeek">
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>
+                                <span class="calendar-date" id="currentWeek">Nov 25 - Dec 1, 2024</span>
+                                <button class="btn btn-sm btn-outline" id="nextWeek">
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                                <button class="btn btn-sm btn-primary" id="todayBtn">Today</button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="calendar-view">
+                                <div class="calendar-header">
+                                    <div class="time-column">Time</div>
+                                    <div class="day-column">Mon</div>
+                                    <div class="day-column">Tue</div>
+                                    <div class="day-column">Wed</div>
+                                    <div class="day-column">Thu</div>
+                                    <div class="day-column">Fri</div>
+                                    <div class="day-column">Sat</div>
+                                </div>
+                                <div class="calendar-body" id="calendarBody">
+                                    <!-- Calendar slots will be generated here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Appointments List -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Today's Appointments</h2>
+                            <div class="header-actions">
+                                <button class="btn btn-sm btn-outline" onclick="refreshAppointments()">
+                                    <i class="fas fa-sync-alt"></i> Refresh
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-actions">
+                                <div class="search-box">
+                                    <i class="fas fa-search"></i>
+                                    <input type="text" placeholder="Search appointments..." class="form-control" id="appointmentSearch">
+                                </div>
+                                <div class="filter-actions">
+                                    <select class="form-control" id="statusFilter">
+                                        <option value="all">All Status</option>
+                                        <option value="scheduled">Scheduled</option>
+                                        <option value="confirmed">Confirmed</option>
+                                        <option value="completed">Completed</option>
+                                        <option value="cancelled">Cancelled</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="table-container">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Patient</th>
+                                            <th>Time</th>
+                                            <th>Service</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="appointments-table-body">
+                                        <!-- Appointments will be loaded here -->
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Pagination -->
+                            <div class="pagination">
+                                <div class="pagination-info" id="pagination-info">
+                                    Showing 1-5 of 12 appointments
+                                </div>
+                                <div class="pagination-controls">
+                                    <button class="pagination-btn" id="prev-page" disabled>
+                                        <i class="fas fa-chevron-left"></i> Previous
+                                    </button>
+                                    <div class="pagination-numbers" id="pagination-numbers">
+                                        <button class="pagination-number active">1</button>
+                                        <button class="pagination-number">2</button>
+                                        <button class="pagination-number">3</button>
+                                    </div>
+                                    <button class="pagination-btn" id="next-page">
+                                        Next <i class="fas fa-chevron-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- New Appointment Modal -->
+    <div class="modal-overlay hidden" id="newAppointmentModal">
+        <div class="modal large">
+            <div class="modal-header">
+                <h3>Schedule New Appointment</h3>
+                <button class="modal-close" onclick="hideNewAppointmentModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="newAppointmentForm">
+                    <!-- Patient Selection -->
+                    <div class="form-group">
+                        <label for="patientSelect">Patient *</label>
+                        <select id="patientSelect" class="form-control" required>
+                            <option value="">Select Patient</option>
+                            <!-- Patients will be loaded dynamically -->
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="appointmentDate">Date *</label>
+                            <input type="date" id="appointmentDate" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="appointmentTime">Time *</label>
+                            <select id="appointmentTime" class="form-control" required>
+                                <option value="">Select Time</option>
+                                <!-- Time slots will be populated dynamically -->
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="serviceType">Service Type *</label>
+                        <textarea id="serviceType" class="form-control" rows="2" placeholder="Describe the dental service required..." required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="appointmentNotes">Notes & Symptoms</label>
+                        <textarea id="appointmentNotes" class="form-control" rows="3" placeholder="Describe any symptoms, concerns, or special requirements..."></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="hideNewAppointmentModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="createNewAppointment()">
+                    <i class="fas fa-calendar-plus"></i> Schedule Appointment
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Appointment Modal -->
+    <div class="modal-overlay hidden" id="editAppointmentModal">
+        <div class="modal large">
+            <div class="modal-header">
+                <h3>Edit Appointment</h3>
+                <button class="modal-close" onclick="hideEditAppointmentModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editAppointmentForm">
+                    <input type="hidden" id="editAppointmentId">
+                    
+                    <!-- Patient Selection -->
+                    <div class="form-group">
+                        <label for="editPatientSelect">Patient *</label>
+                        <select id="editPatientSelect" class="form-control" required>
+                            <option value="">Select Patient</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="editAppointmentDate">Date *</label>
+                            <input type="date" id="editAppointmentDate" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editAppointmentTime">Time *</label>
+                            <select id="editAppointmentTime" class="form-control" required>
+                                <option value="">Select Time</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editServiceType">Service Type *</label>
+                        <textarea id="editServiceType" class="form-control" rows="2" placeholder="Describe the dental service required..." required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editAppointmentNotes">Notes & Symptoms</label>
+                        <textarea id="editAppointmentNotes" class="form-control" rows="3" placeholder="Describe any symptoms, concerns, or special requirements..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editAppointmentStatus">Status *</label>
+                        <select id="editAppointmentStatus" class="form-control" required>
+                            <option value="scheduled">Scheduled</option>
+                            <option value="confirmed">Confirmed</option>
+                            <option value="completed">Completed</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="hideEditAppointmentModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="updateAppointment()">
+                    <i class="fas fa-save"></i> Update Appointment
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reschedule Appointment Modal -->
+    <div class="modal-overlay hidden" id="rescheduleAppointmentModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Reschedule Appointment</h3>
+                <button class="modal-close" onclick="hideRescheduleAppointmentModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="rescheduleAppointmentForm">
+                    <input type="hidden" id="rescheduleAppointmentId">
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="rescheduleDate">New Date *</label>
+                            <input type="date" id="rescheduleDate" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="rescheduleTime">New Time *</label>
+                            <select id="rescheduleTime" class="form-control" required>
+                                <option value="">Select Time</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="rescheduleReason">Reason for Rescheduling</label>
+                        <textarea id="rescheduleReason" class="form-control" rows="3" placeholder="Please provide a reason for rescheduling..."></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="hideRescheduleAppointmentModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="rescheduleAppointment()">
+                    <i class="fas fa-calendar-alt"></i> Reschedule
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Appointment Details Modal -->
+    <div class="modal-overlay hidden" id="appointmentDetailsModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Appointment Details</h3>
+                <button class="modal-close" onclick="hideAppointmentDetailsModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="appointment-details" id="appointmentDetails">
+                    <!-- Details will be loaded here -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="hideAppointmentDetailsModal()">Close</button>
+                <button class="btn btn-primary" id="editAppointmentBtn">Edit</button>
+                <button class="btn btn-warning" id="rescheduleBtn">Reschedule</button>
+                <button class="btn btn-danger" id="cancelAppointmentBtn">Cancel</button>
+            </div>
+        </div>
+    </div>
+   <script src="../../js/doctor/appointments.js"></script>
+       <script src="../../js/core/utils.js"></script>
+    <script src="../../js/core/api.js"></script>
+    <script src="../../js/core/auth.js"></script>
+    <script src="../../js/appointments.js"></script>
+</body>
+</html>
+  
+   
+ 

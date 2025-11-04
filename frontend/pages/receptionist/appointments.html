@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointments - Dental Clinic</title>
+    <link rel="stylesheet" href="../../css/receptionist/appointments.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar -->
+        <aside class="main-sidebar">
+            <div class="sidebar-content">
+                <div class="sidebar-header">
+                    <div class="sidebar-logo">
+                        <i class="fas fa-tooth"></i>
+                        <span class="logo-text">Dental Clinic</span>
+                    </div>
+                    <button class="sidebar-close" id="sidebarClose">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <nav class="sidebar-nav">
+                    <ul class="nav-list">
+                        <li class="nav-item">
+                            <a href="dashboard.html" class="nav-link">
+                                <i class="fas fa-home nav-icon"></i>
+                                <span class="nav-text">Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="appointments.html" class="nav-link active">
+                                <i class="fas fa-calendar-check nav-icon"></i>
+                                <span class="nav-text">Appointments</span>
+                            </a>
+                        </li>
+                           <li class="nav-item">
+                            <a href="patients.html" class="nav-link">
+                                <i class="fas fa-user-md nav-icon"></i>
+                                <span class="nav-text">Patients</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="assign-doctor.html" class="nav-link">
+                                <i class="fas fa-user-md nav-icon"></i>
+                                <span class="nav-text">Assign Doctor</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+
+                <div class="sidebar-footer">
+                    <div class="user-profile">
+                        <div class="user-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="user-details">
+                            <div class="user-name" id="sidebar-user-name">Loading...</div>
+                            <div class="user-role" id="sidebar-user-role">Receptionist</div>
+                        </div>
+                    </div>
+                    <button class="logout-btn sidebar-logout" onclick="handleLogout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <header class="main-header">
+                <div class="header-content">
+                    <button class="mobile-menu-btn" id="mobileMenuBtn">
+                        <i class="fas fa-bars"></i>
+                    </button>
+
+                    <div class="logo-section">
+                        <div class="logo">
+                            <i class="fas fa-tooth"></i>
+                            <span class="logo-text">Dental Clinic</span>
+                        </div>
+                    </div>
+
+                    <div class="search-section">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" placeholder="Search appointments..." id="globalSearch">
+                            <button class="search-clear hidden" id="searchClear">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="header-actions">
+                        <div class="action-item dropdown">
+                            <button class="action-btn" id="notificationsBtn">
+                                <i class="fas fa-bell"></i>
+                                <span class="notification-badge hidden" id="notificationCount">0</span>
+                            </button>
+                            <div class="dropdown-menu notifications-dropdown">
+                                <div class="dropdown-header">
+                                    <h4>Notifications</h4>
+                                    <button class="btn btn-sm btn-outline" onclick="markAllNotificationsRead()">Mark all read</button>
+                                </div>
+                                <div class="dropdown-body">
+                                    <div class="notification-list" id="notificationList">
+                                        <div class="loading-state">
+                                            <i class="fas fa-spinner fa-spin"></i>
+                                            <p>Loading notifications...</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dropdown-footer">
+                                    <a href="#" class="view-all">View all notifications</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="action-item dropdown">
+                            <button class="user-profile-btn" id="userProfileBtn">
+                                <div class="user-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="user-info">
+                                    <span class="user-name" id="header-user-name">Loading...</span>
+                                    <span class="user-role" id="header-user-role">Receptionist</span>
+                                </div>
+                                <i class="fas fa-chevron-down dropdown-arrow"></i>
+                            </button>
+                            <div class="dropdown-menu profile-dropdown">
+                                <div class="dropdown-body">
+                                    <a href="profile.html" class="dropdown-item">
+                                        <i class="fas fa-user"></i>
+                                        <span>My Profile</span>
+                                    </a>
+                                    <a href="settings.html" class="dropdown-item">
+                                        <i class="fas fa-cog"></i>
+                                        <span>Settings</span>
+                                    </a>
+                                    <div class="dropdown-divider"></div>
+                                    <a href="#" class="dropdown-item logout-btn" onclick="handleLogout()">
+                                        <i class="fas fa-sign-out-alt"></i>
+                                        <span>Logout</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Appointments Content -->
+            <main class="content-area">
+                <div class="appointments-management">
+                    <!-- Page Header -->
+                    <div class="page-header">
+                        <div class="header-content">
+                            <h1>Appointments Management</h1>
+                            <p>Manage and track all patient appointments</p>
+                        </div>
+                        <div class="header-actions">
+                            <div class="last-updated">
+                                <i class="fas fa-sync-alt"></i>
+                                <span id="last-updated-time">Just now</span>
+                            </div>
+                            <div class="date-filter">
+                                <i class="fas fa-calendar-alt"></i>
+                                <input type="date" id="dateFilter" value="">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stats Bar -->
+                    <div class="stats-bar">
+                        <div class="stat-item">
+                            <div class="stat-number" id="total-appointments">0</div>
+                            <div class="stat-label">Total</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="confirmed-appointments">0</div>
+                            <div class="stat-label">Confirmed</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="pending-appointments">0</div>
+                            <div class="stat-label">Pending</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="cancelled-appointments">0</div>
+                            <div class="stat-label">Cancelled</div>
+                        </div>
+                    </div>
+
+                    <!-- Filters and Actions -->
+                    <div class="filters-section">
+                        <div class="filter-group">
+                            <label for="statusFilter">Status</label>
+                            <select id="statusFilter" class="form-control">
+                                <option value="all">All Status</option>
+                                <option value="scheduled">Scheduled</option>
+                                <option value="confirmed">Confirmed</option>
+                                <option value="in-progress">In Progress</option>
+                                <option value="completed">Completed</option>
+                                <option value="cancelled">Cancelled</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="doctorFilter">Doctor</label>
+                            <select id="doctorFilter" class="form-control">
+                                <option value="all">All Doctors</option>
+                            </select>
+                        </div>
+                        <div class="filter-actions">
+                            <button class="btn btn-outline" onclick="clearFilters()">
+                                <i class="fas fa-times"></i>
+                                Clear
+                            </button>
+                            <button class="btn btn-primary" onclick="applyFilters()">
+                                <i class="fas fa-filter"></i>
+                                Apply
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Appointments Table -->
+                    <div class="content-card">
+                        <div class="card-header">
+                            <h3>Appointments List</h3>
+                            <div class="card-actions">
+                                <button class="btn btn-sm btn-outline" onclick="exportAppointments()">
+                                    <i class="fas fa-download"></i>
+                                    Export
+                                </button>
+                                <button class="btn btn-sm btn-outline" onclick="refreshAppointments()">
+                                    <i class="fas fa-sync-alt"></i>
+                                    Refresh
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-container">
+                                <table class="data-table" id="appointmentsTable">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                <input type="checkbox" id="selectAll">
+                                            </th>
+                                            <th>Patient</th>
+                                            <th>Service</th>
+                                            <th>Doctor</th>
+                                            <th>Date & Time</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="appointmentsTableBody">
+                                        <tr>
+                                            <td colspan="7" class="text-center">
+                                                <div class="loading-state">
+                                                    <i class="fas fa-spinner fa-spin"></i>
+                                                    <p>Loading appointments...</p>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <!-- Pagination -->
+                            <div class="pagination" id="pagination">
+                                <button class="btn btn-outline btn-sm" id="prevPage" disabled>
+                                    <i class="fas fa-chevron-left"></i>
+                                    Previous
+                                </button>
+                                <div class="page-info">
+                                    Page <span id="currentPage">1</span> of <span id="totalPages">1</span>
+                                </div>
+                                <button class="btn btn-outline btn-sm" id="nextPage" disabled>
+                                    Next
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Connection Status Indicator -->
+    <div class="connection-status" id="connectionStatus">
+        <i class="fas fa-wifi"></i>
+        <span>Connected</span>
+    </div>
+
+    <!-- Appointment Details Modal -->
+    <div class="modal" id="appointmentDetailsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Appointment Details</h3>
+                <button class="modal-close" onclick="closeAppointmentDetailsModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="appointment-details" id="appointmentDetailsContent">
+                    <!-- Dynamic content will be loaded here -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeAppointmentDetailsModal()">Close</button>
+                <button class="btn btn-warning" onclick="editAppointment()">Edit</button>
+                <button class="btn btn-danger" onclick="cancelAppointment()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Appointment Modal -->
+    <div class="modal" id="editAppointmentModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Edit Appointment</h3>
+                <button class="modal-close" onclick="closeEditAppointmentModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editAppointmentForm">
+                    <div class="form-group">
+                        <label for="editPatientName">Patient Name</label>
+                        <input type="text" id="editPatientName" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editService">Service</label>
+                        <input type="text" id="editService" class="form-control" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="editAppointmentDate">Date</label>
+                            <input type="date" id="editAppointmentDate" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editAppointmentTime">Time</label>
+                            <input type="time" id="editAppointmentTime" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="editDoctor">Assign Doctor</label>
+                        <select id="editDoctor" class="form-control">
+                            <option value="">Not Assigned</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editStatus">Status</label>
+                        <select id="editStatus" class="form-control" required>
+                            <option value="scheduled">Scheduled</option>
+                            <option value="confirmed">Confirmed</option>
+                            <option value="in-progress">In Progress</option>
+                            <option value="completed">Completed</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editNotes">Notes</label>
+                        <textarea id="editNotes" class="form-control" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeEditAppointmentModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="saveAppointmentChanges()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../js/receptionist/appointments.js"></script>
+</body>
+</html>
